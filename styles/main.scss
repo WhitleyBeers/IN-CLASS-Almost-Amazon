@@ -95,4 +95,15 @@ body {
   .description {
     white-space: pre-wrap;
   }
+
+  .card {
+    width: 300px;
+    margin: 5px;
+    text-align: center;
+
+    .sale-badge {
+      font-size: 1em;
+      background-color: blue;
+    }
+  }
 }
