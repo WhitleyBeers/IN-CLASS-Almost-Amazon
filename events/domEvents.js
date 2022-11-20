@@ -1,9 +1,12 @@
-import { deleteSingleAuthor, getAuthors, getSingleAuthor } from '../api/authorData';
+import { getAuthors, getSingleAuthor } from '../api/authorData';
 import { deleteBook, getBooks, getSingleBook } from '../api/bookData';
 import { showAuthors } from '../pages/authors';
 import { showBooks } from '../pages/books';
 import addBookForm from '../components/forms/addBookForm';
 import addAuthorForm from '../components/forms/addAuthorForm';
+import { getBookDetails, getAuthorDetails, deleteAuthorBooksRelationship } from '../api/mergedData';
+import viewBook from '../pages/viewBook';
+import viewAuthor from '../pages/viewAuthor';
 
 const domEvents = () => {
   document.querySelector('#main-container').addEventListener('click', (e) => {
@@ -40,6 +43,8 @@ const domEvents = () => {
     if (e.target.id.includes('view-book-btn')) {
       console.warn('VIEW BOOK', e.target.id);
       console.warn(e.target.id.split('--'));
+      const [, firebaseKey] = e.target.id.split('--');
+      getBookDetails(firebaseKey).then(viewBook);
     }
 
     // FIXME: ADD CLICK EVENT FOR DELETING AN AUTHOR
@@ -49,7 +54,7 @@ const domEvents = () => {
         console.warn('DELETE AUTHOR', e.target.id);
         const [, firebaseKey] = e.target.id.split('--');
 
-        deleteSingleAuthor(firebaseKey).then(() => {
+        deleteAuthorBooksRelationship(firebaseKey).then(() => {
           getAuthors().then(showAuthors);
         });
       }
@@ -66,7 +71,14 @@ const domEvents = () => {
       // console.warn(e.target.id.split('--'));
       const [, firebaseKey] = e.target.id.split('--');
 
-      getSingleAuthor(firebaseKey).then((bookObj) => addAuthorForm(bookObj));
+      getSingleAuthor(firebaseKey).then((authorObj) => addAuthorForm(authorObj));
+    }
+
+    // TODO: CLICK EVENT FOR VIEW AUTHOR DETAILS
+    if (e.target.id.includes('view-author-btn')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      console.warn(getAuthorDetails(firebaseKey));
+      getAuthorDetails(firebaseKey).then(viewAuthor);
     }
   });
 };
