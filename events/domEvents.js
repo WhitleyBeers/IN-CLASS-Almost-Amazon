@@ -34,7 +34,7 @@ const domEvents = (user) => {
       // console.warn(e.target.id.split('--'));
       const [, firebaseKey] = e.target.id.split('--');
 
-      getSingleBook(firebaseKey).then((bookObj) => addBookForm(bookObj));
+      getSingleBook(firebaseKey).then((bookObj) => addBookForm(bookObj, user));
       // getSingleBook(firebaseKey).then(addBookForm); // using the callback method
     }
 
